@@ -20,3 +20,30 @@ sudo systemctl restart vncserver-x11-serviced
 git clone https://github.com/seamusdemora/RonR-RPi-image-utils.git
 sudo install --mode=755 RonR-RPi-image-utils/image-* /usr/local/sbin/
 rm -r RonR-RPi-image-utils/
+
+# download noVNC and create self-signed cert
+cd /usr/local/
+sudo git clone https://github.com/novnc/noVNC.git
+cd noVNC
+sudo openssl req -x509 -nodes -newkey rsa:2048   -keyout novnc.pem -out novnc.pem   -days 3650 -subj "/CN=raspberrypi"
+
+# Create and start noVNC service
+sudo printf "[Unit]
+Description=noVNC Proxy
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/noVNC/utils/novnc_proxy \
+    --vnc localhost:5900 \
+    --cert /usr/local/noVNC/novnc.pem \
+    --ssl-only \
+    --listen 443
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target>" > /etc/systemd/system/novnc.service
+sudo systemctl daemon-reload
+sudo systemctl enable novnc
+sudo systemctl start novnc
