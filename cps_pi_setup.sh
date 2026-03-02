@@ -47,3 +47,6 @@ WantedBy=multi-user.target>" > /etc/systemd/system/novnc.service
 sudo systemctl daemon-reload
 sudo systemctl enable novnc
 sudo systemctl start novnc
+
+# Create backup image at /media/backup.img
+sudo image-backup --initial /media/backup.img
