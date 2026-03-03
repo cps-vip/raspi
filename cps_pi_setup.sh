@@ -62,4 +62,3 @@ sudo rosdep init
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro kilted -y --skip-keys "fastcdr rti-connext-dds-7.3.0 urdfdom_headers python3-vcstool python3-pyqt5 python3-sip python3-qt5-bindings"
 colcon build --symlink-install
-sudo setcap -r /usr/bin/python3.11
