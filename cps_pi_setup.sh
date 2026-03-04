@@ -57,7 +57,7 @@ mkdir -p ~/ros2_kilted/src
 cd ~/ros2_kilted
 vcs import --input https://raw.githubusercontent.com/ros2/ros2/kilted/ros2.repos src
 sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
-sudo apt upgrade
+sudo apt upgrade -y
 sudo rosdep init
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro kilted -y --skip-keys "fastcdr rti-connext-dds-7.3.0 urdfdom_headers python3-vcstool python3-pyqt5 python3-sip python3-qt5-bindings"
