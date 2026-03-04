@@ -67,14 +67,15 @@ rm -rf logs/* build/ src/ # Clean up build files
 sudo apt install -y libzmq3-dev 
 cd
 git clone https://github.com/GMLC-TDC/HELICS
-git checkout v3.6.1
 cd HELICS/
 git checkout v3.6.1
 mkdir build
 cd build 
 cmake ..
 make -j4
-printf "\nexport PATH=\"\$PATH:/home/pi/HELICS/build/bin\"./\n" >> ~/.bashrc # HELICS bin to PATH in .bashrc
+sudo make install
+rm -rf ~/HELICS
+cd
 
 # Clean up home dir and create backup image at /media/backup.img
 rm ~/.cache/* ~/.vscode_server/ ~/*.log ~/.copilot/ ~/.config/chromium/ ~/.config/mozilla
