@@ -17,6 +17,7 @@ printf "cpsvip42\ncpsvip42\n\n" | sudo vncpasswd -legacy -service
 sudo systemctl restart vncserver-x11-serviced
 
 # Install backup scripts
+cd
 git clone https://github.com/seamusdemora/RonR-RPi-image-utils.git
 sudo install --mode=755 RonR-RPi-image-utils/image-* /usr/local/sbin/
 rm -r RonR-RPi-image-utils/
@@ -48,11 +49,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable novnc
 sudo systemctl start novnc
 
-# Create backup image at /media/backup.img
-sudo image-backup --initial /media/backup.img
-
 # Install ROS2 Kilted Kaiju on Raspberry Pi OS--Debian Trixie 13.3 (Based off of instructions found in https://forums.raspberrypi.com/viewtopic.php?t=361746)
 sudo apt install -y git colcon python3-rosdep2 vcstool wget python3-flake8-docstrings python3-pip python3-pytest-cov python3-flake8-blind-except python3-flake8-builtins python3-flake8-class-newline python3-flake8-comprehensions python3-flake8-deprecated python3-flake8-import-order python3-flake8-quotes python3-pytest-repeat python3-pytest-rerunfailures python3-vcstools libx11-dev libxrandr-dev libasio-dev libtinyxml2-dev lttng-tools
+cd
 mkdir -p ~/ros2_kilted/src
 cd ~/ros2_kilted
 vcs import --input https://raw.githubusercontent.com/ros2/ros2/kilted/ros2.repos src
@@ -62,3 +61,8 @@ sudo rosdep init
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro kilted -y --skip-keys "fastcdr rti-connext-dds-7.3.0 urdfdom_headers python3-vcstool python3-pyqt5 python3-sip python3-qt5-bindings"
 colcon build --symlink-install
+rm -rf logs/* build/ src/ # Clean up build files
+
+# Clean up home dir and create backup image at /media/backup.img
+rm ~/.cache/* ~/.vscode_server/ ~/*.log ~/.copilot/ ~/.config/chromium/ ~/.config/mozilla
+sudo image-backup --initial /media/backup.img
