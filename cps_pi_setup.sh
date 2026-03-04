@@ -49,7 +49,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable novnc
 sudo systemctl start novnc
 
-# Build and install ROS2 Kilted Kaiju on Raspberry Pi OS--Debian Trixie 13.3 (Based off of instructions found in https://forums.raspberrypi.com/viewtopic.php?t=361746)
+# Build ROS2 Kilted Kaiju on Raspberry Pi OS--Debian Trixie 13.3 (Based off of instructions found in https://forums.raspberrypi.com/viewtopic.php?t=361746)
 sudo apt install -y git colcon python3-rosdep2 vcstool wget python3-flake8-docstrings python3-pip python3-pytest-cov python3-flake8-blind-except python3-flake8-builtins python3-flake8-class-newline python3-flake8-comprehensions python3-flake8-deprecated python3-flake8-import-order python3-flake8-quotes python3-pytest-repeat python3-pytest-rerunfailures python3-vcstools libx11-dev libxrandr-dev libasio-dev libtinyxml2-dev lttng-tools
 mkdir -p ~/ros2_kilted/src
 cd ~/ros2_kilted
@@ -61,7 +61,7 @@ rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro kilted -y --skip-keys "fastcdr rti-connext-dds-7.3.0 urdfdom_headers python3-vcstool python3-pyqt5 python3-sip python3-qt5-bindings"
 colcon build --symlink-install
 printf "\nalias ros2_local_setup=\"source /home/pi/ros2_kilted/install/local_setup.bash\"\nexport PATH=\"\$PATH:/home/pi/ros2_kilted/install/bin\"\n" >> ~/.bashrc # create setup alias and ros2 bin to PATH
-rm -rf logs/* build/ src/ # Clean up build files
+rm -rf logs/* build/ src/ # Remove up build files
 
 # Build and install HELICS
 sudo apt install -y libzmq3-dev 
@@ -74,8 +74,19 @@ cd build
 cmake ..
 make -j4
 sudo make install
-rm -rf ~/HELICS
+rm -rf ~/HELICS # Remove build files
 cd
+
+# Build and install GridLab-D
+cd
+git clone https://github.com/gridlab-d/gridlab-d.git
+cd gridlab-d
+git submodule update --init
+mkdir cmake-build
+cd cmake-build
+cmake -DGLD_USE_HELICS=ON -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" ..
+sudo cmake --build . -j4 --target install
+rm -rf ~/gridlab-d # Remove build files
 
 # Clean up home dir and create backup image at /media/backup.img
 rm ~/.cache/* ~/.vscode_server/ ~/*.log ~/.copilot/ ~/.config/chromium/ ~/.config/mozilla
