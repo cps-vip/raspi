@@ -89,5 +89,5 @@ sudo cmake --build . -j4 --target install
 rm -rf ~/gridlab-d # Remove build files
 
 # Clean up home dir and create backup image at /media/backup.img
-rm ~/.cache/* ~/.vscode_server/ ~/*.log ~/.copilot/ ~/.config/chromium/ ~/.config/mozilla
+rm -r ~/.cache/* ~/.vscode-server/ ~/*.log ~/.copilot/ ~/.config/chromium/ ~/.config/mozilla
 sudo image-backup --initial /media/backup.img
