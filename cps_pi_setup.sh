@@ -4,11 +4,14 @@ sudo raspi-config nonint do_wayland W1
 sudo raspi-config nonint do_net_names 0
 sudo raspi-config nonint do_vnc 0
 sudo raspi-config nonint do_vnc_resolution "1280x720"
+sudo raspi-config nonint do_serial_cons 0
+sudo raspi-config nonint do_serial_hw 0
 
 # Install a few apps
 sudo apt install xrdp vim htop curl git screen x11-apps kate
+pip install pyserial --break
 
-#S etup static IP
+#Setup static IP
 sudo nmcli connection add   type ethernet ifname end0 con-name end0-static   ipv4.method manual   ipv4.addresses 192.168.2.2/24   ipv4.gateway 192.168.2.1   ipv4.dns "8.8.8.8 1.1.1.1"   autoconnect yes
 sudo nmcli connection up end0-static
 
